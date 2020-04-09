@@ -1,0 +1,43 @@
+pipeline {
+agent any {
+stages ('one'){
+steps{
+echo 'hi this is satish '
+}
+}
+stages('two'){
+steps {
+input ('do u want proceed ')
+}
+}
+stage('three'){
+when {
+not {
+branch "master"
+}
+}
+steps {
+echo "hello"
+}
+}
+stage ('four')
+{
+parallel {
+stage ('unit test'){
+steps{
+echo "running the unit test"
+}
+}stage ('intigration test'){
+agent{
+docker{
+resueNode true 
+image 'ubuntu'
+}
+}
+steps{
+echo "running the intigration test"
+}
+}
+}
+}
+}
